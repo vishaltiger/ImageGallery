@@ -1,24 +1,28 @@
 class Service{
-    imagelist :any[]=[];
+   private imagelist :ItemModal[]=[];
     Service(){
       console.log("service");  
     }
-   AddImage(id:number,name:string,time:string,date:string,recentUrl:string,filename:string) {
+    public gelist(){
+     return this.imagelist;
+    }
+    public AddImage(id:number,name:string,time:string,date:string,recentUrl:string,filename:string):ItemModal {
  
    
-        var obj = {
-            "id":id,
-            "name":name,
-            "time":time,
-            "date":date,
-            "recentUrl":recentUrl,
-            "fileName":filename
+        var obj :ItemModal=  {
+            id:id,
+            name:name,
+            time:time,
+            date:date,
+            recentUrl:recentUrl,
+            fileName:filename
         }
         this.imagelist.push(obj);
-        return this.imagelist;
+        return obj;
     }
-    EditImage(id:number,name:string,time:string,date:string,recentUrl:string,fileName:string){
-   this.imagelist.forEach(ele=>{
+    public EditImage(id:number,name:string,time:string,date:string,recentUrl:string,fileName:string){
+     
+     this.imagelist.forEach(ele=>{
        if(ele.id==id){
            ele.id=id;
            ele.name=name;
@@ -26,19 +30,22 @@ class Service{
            ele.date=date;
            ele.recentUrl = recentUrl;
            ele.fileName = fileName;
+           return ele;
        }
+      
+      
    })
-   return this.imagelist;
+ 
     }
-    Delete(id:number){
-     this.imagelist.forEach(ele=>{
+    public Delete(id:number):boolean{
+        this.imagelist.forEach(ele=>{
        if(ele.id==id){
-           var i = imagelist.indexOf(ele);
+           var i = this.imagelist.indexOf(ele);
           this.imagelist.splice(i,1);
         
        }
    })
-   return this.imagelist;
+   return true;
     }
 
 }

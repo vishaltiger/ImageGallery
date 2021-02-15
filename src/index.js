@@ -2,7 +2,6 @@
 var _a, _b, _c;
 var Ser = new Service();
 var Ut = new Utility();
-var imagelist = [];
 var ImageGallery = {
     recentUrl: "",
     id: 0,
@@ -14,8 +13,9 @@ var ImageGallery = {
         var newEle = document.createElement('p');
         var newImg = document.createElement('img');
         newEle.setAttribute("class", "MessageTitle");
+        console.log(Ser.gelist().length);
         if (gallery != null) {
-            if (imagelist.length == 0) {
+            if (Ser.gelist().length == 0) {
                 newImg.setAttribute("src", "https://cdn.dribbble.com/users/707433/screenshots/6654057/comp_4.gif");
                 newEle.appendChild(newImg);
                 gallery.appendChild(newEle);
@@ -24,6 +24,14 @@ var ImageGallery = {
                 (_a = document.querySelector(".MessageTitle")) === null || _a === void 0 ? void 0 : _a.remove();
             }
         }
+    },
+    clearFormField: function () {
+        var enterDate = document.querySelector('.EnterDate');
+        var AuthorName = document.querySelector('.AuthorName');
+        var inputImage = document.querySelector(".imageinput");
+        AuthorName.value = "";
+        enterDate.value = "";
+        inputImage.value = "";
     },
     loadImage: function (event) {
         var reader = new FileReader();
@@ -57,13 +65,11 @@ var ImageGallery = {
         time = ImageGallery.getTime();
         if (gallery != null && AuthorName != null && modal != null && inputImage != null) {
             if (Ut.validate(AuthorName.value, inputImage.value, enterDate.value) == true) {
-                imagelist = Ser.AddImage(ImageGallery.id, AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
+                Ser.AddImage(ImageGallery.id, AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
                 imageDiv.innerHTML = "<div class='imageBox'><img  src='" + ImageGallery.recentUrl + "'></div><div class='content'> <p class='name'>" + AuthorName.value + "</p><p class='date'>" + enterDate.value.toString() + "</p><p class='time'>" + time + "</p><i id='" + ImageGallery.id + "' class='fa fa-pencil-square-o EditIcon' data-toggle='modal' data-target='#FormModal' onclick='ImageGallery.EditForm(event)' aria-hidden='true'></i><i id='" + ImageGallery.id + "' class='fa fa-trash' onclick='ImageGallery.deleteImage(event)' aria-hidden='true'></i></div>";
                 ImageGallery.id = ImageGallery.id + 1;
                 gallery === null || gallery === void 0 ? void 0 : gallery.appendChild(imageDiv);
-                AuthorName.value = "";
-                enterDate.value = "";
-                inputImage.value = "";
+                ImageGallery.clearFormField();
                 (_a = document.getElementById("SubmitButton")) === null || _a === void 0 ? void 0 : _a.setAttribute("data-dismiss", "modal");
                 ImageGallery.checkIfEmptyList();
             }
@@ -85,6 +91,8 @@ var ImageGallery = {
             Title.innerHTML = "Edit Item";
             Button.innerHTML = "Update";
         }
+        var imagelist = Ser.gelist();
+        console.log(imagelist);
         if (imagelist.length != 0) {
             imagelist.forEach(function (ele) {
                 if (parseInt(event.target.id) == ele.id) {
@@ -95,6 +103,7 @@ var ImageGallery = {
         }
     },
     AddForm: function () {
+        ImageGallery.clearFormField();
         var Title = document.getElementById("exampleModalLabel");
         var Button = document.getElementById("SubmitButton");
         ImageGallery.flag = 1;
@@ -113,7 +122,7 @@ var ImageGallery = {
         var time = ImageGallery.getTime();
         if (Ut.validate(AuthorName.value, inputImage.value, enterDate.value) == true) {
             console.log(inputImage.value.length);
-            imagelist = Ser.EditImage(parseInt(id), AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
+            Ser.EditImage(parseInt(id), AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
             if (parent != null) {
                 parent.children[0].innerHTML = AuthorName.value;
                 parent.children[1].innerHTML = enterDate.value;
@@ -142,19 +151,14 @@ var ImageGallery = {
         var _a, _b;
         var id = event.target.id;
         var Parentelement = (_b = (_a = document.getElementById(id)) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement;
-        imagelist = Ser.Delete(parseInt(id));
-        ImageGallery.checkIfEmptyList();
-        if (Parentelement != null) {
-            Parentelement.remove();
-            alert("deleted");
+        if (Ser.Delete(parseInt(id))) {
+            ImageGallery.checkIfEmptyList();
+            if (Parentelement != null) {
+                Parentelement.remove();
+                alert("deleted");
+            }
         }
     },
-    clearnodes: function () {
-        console.log("hello");
-        var Childele = document.querySelector(".galleryPortion");
-        var items = Childele === null || Childele === void 0 ? void 0 : Childele.childNodes;
-        console.log(items);
-    }
 };
 ImageGallery.checkIfEmptyList();
 (_a = document.querySelector(".imageinput")) === null || _a === void 0 ? void 0 : _a.addEventListener("change", ImageGallery.loadImage);

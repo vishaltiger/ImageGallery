@@ -1,18 +1,19 @@
 var Ser = new Service();
 var Ut = new Utility();
-var imagelist :any[]=[];
 var ImageGallery={
   recentUrl:"",
   id:0,
   flag:-1,
   currentSelected:"",
   checkIfEmptyList:function() {
+
     var gallery = document.querySelector(".galleryPortion");
     var newEle = document.createElement('p');
     var newImg = document.createElement('img');
     newEle.setAttribute("class","MessageTitle");
+    console.log(Ser.gelist().length);
     if(gallery!=null){
-      if(imagelist.length==0){
+      if(Ser.gelist().length==0){
         newImg.setAttribute("src","https://cdn.dribbble.com/users/707433/screenshots/6654057/comp_4.gif");
         newEle.appendChild(newImg);
         gallery.appendChild(newEle);
@@ -20,6 +21,14 @@ var ImageGallery={
         document.querySelector(".MessageTitle")?.remove(); 
       }
     }
+  },
+  clearFormField:function() {
+    var enterDate = <HTMLInputElement>document.querySelector('.EnterDate');
+    var AuthorName=<HTMLInputElement>document.querySelector('.AuthorName');
+   var inputImage =  <HTMLInputElement>document.querySelector(".imageinput");
+   AuthorName.value="";
+   enterDate.value="";
+   inputImage.value="";
   },
   loadImage:function(event:any){
 const reader:any = new FileReader();
@@ -55,14 +64,12 @@ reader.readAsDataURL(event.target.files[0]);
         if(gallery!=null && AuthorName!=null && modal!=null && inputImage!=null ){
          
           if(Ut.validate(AuthorName.value,inputImage.value,enterDate.value)==true){
-            imagelist= Ser.AddImage(ImageGallery.id,AuthorName.value,time,enterDate.value,ImageGallery.recentUrl,inputImage.value);
-            imageDiv.innerHTML="<div class='imageBox'><img  src='"+ImageGallery.recentUrl+"'></div><div class='content'> <p class='name'>"+AuthorName.value+"</p><p class='date'>"+enterDate.value.toString()+"</p><p class='time'>"+time+"</p><i id='"+ImageGallery.id+"' class='fa fa-pencil-square-o EditIcon' data-toggle='modal' data-target='#FormModal' onclick='ImageGallery.EditForm(event)' aria-hidden='true'></i><i id='"+ImageGallery.id+"' class='fa fa-trash' onclick='ImageGallery.deleteImage(event)' aria-hidden='true'></i></div>";
+            Ser.AddImage(ImageGallery.id,AuthorName.value,time,enterDate.value,ImageGallery.recentUrl,inputImage.value);
+           imageDiv.innerHTML="<div class='imageBox'><img  src='"+ImageGallery.recentUrl+"'></div><div class='content'> <p class='name'>"+AuthorName.value+"</p><p class='date'>"+enterDate.value.toString()+"</p><p class='time'>"+time+"</p><i id='"+ImageGallery.id+"' class='fa fa-pencil-square-o EditIcon' data-toggle='modal' data-target='#FormModal' onclick='ImageGallery.EditForm(event)' aria-hidden='true'></i><i id='"+ImageGallery.id+"' class='fa fa-trash' onclick='ImageGallery.deleteImage(event)' aria-hidden='true'></i></div>";
           ImageGallery.id = ImageGallery.id+1;
         gallery?.appendChild(imageDiv);
-        AuthorName.value="";
-        enterDate.value="";
-        inputImage.value="";
-        document.getElementById("SubmitButton")?.setAttribute("data-dismiss","modal");
+       ImageGallery.clearFormField();
+       document.getElementById("SubmitButton")?.setAttribute("data-dismiss","modal");
         ImageGallery.checkIfEmptyList();
         
           }else{
@@ -85,8 +92,10 @@ reader.readAsDataURL(event.target.files[0]);
       Title.innerHTML= "Edit Item";
       Button.innerHTML="Update";
      }
-    
+     var imagelist = Ser.gelist();
+     console.log(imagelist);
      if(imagelist.length!=0){
+   
        imagelist.forEach(ele=>{
       if(parseInt(event.target.id)==ele.id){
       AuthorName.value = ele.name;
@@ -98,6 +107,7 @@ reader.readAsDataURL(event.target.files[0]);
 
     },
     AddForm:function() {
+      ImageGallery.clearFormField();
       var Title = document.getElementById("exampleModalLabel");
       var Button = document.getElementById("SubmitButton");
       ImageGallery.flag=1;
@@ -105,7 +115,7 @@ reader.readAsDataURL(event.target.files[0]);
         Title.innerHTML= "Add Item";
         Button.innerHTML="Add";
        }
-  
+      
     },
     EditImage:function(id:string) {
       var parent = <Element>document.getElementById(id)?.parentElement;
@@ -117,7 +127,7 @@ reader.readAsDataURL(event.target.files[0]);
          
          if(Ut.validate(AuthorName.value,inputImage.value,enterDate.value)==true){
           console.log(inputImage.value.length);
-           imagelist=Ser.EditImage(parseInt(id),AuthorName.value,time,enterDate.value,ImageGallery.recentUrl,inputImage.value);
+           Ser.EditImage(parseInt(id),AuthorName.value,time,enterDate.value,ImageGallery.recentUrl,inputImage.value);
            if(parent!=null){
             parent.children[0].innerHTML = AuthorName.value;
             parent.children[1].innerHTML = enterDate.value;
@@ -146,20 +156,16 @@ reader.readAsDataURL(event.target.files[0]);
 
       var id= event.target.id;
       var Parentelement=document.getElementById(id)?.parentElement?.parentElement;
-        imagelist= Ser.Delete(parseInt(id));
-      ImageGallery.checkIfEmptyList();
-       if(Parentelement!=null){
-        Parentelement.remove();
-        alert("deleted");
-       }
-    },
-    clearnodes:function(){
-      console.log("hello");
-      var Childele = document.querySelector(".galleryPortion");
-      var items = Childele?.childNodes;
-    console.log(items);
+        if(Ser.Delete(parseInt(id))){
+          ImageGallery.checkIfEmptyList();
+          if(Parentelement!=null){
+           Parentelement.remove();
+           alert("deleted");
+          }
+        }
     
-    }
+    },
+  
   
 };
 ImageGallery.checkIfEmptyList();
