@@ -4,9 +4,32 @@ var Ser = new Service();
 var Ut = new Utility();
 var ImageGallery = {
     recentUrl: "",
-    id: 0,
     flag: -1,
     currentSelected: "",
+    CreateGalleryItems: function (imagelist) {
+        var gallery = document.querySelector('.galleryPortion');
+        imagelist.forEach(function (ele) {
+            if (document.getElementById(ele.id.toString()) == null || document.getElementById(ele.id.toString()) == undefined) {
+                var imageDiv = document.createElement('div');
+                imageDiv.innerHTML = "<div class='imageBox'><img  src='" + ele.recentUrl + "'></div><div class='content'> <p class='name'>" + ele.name + "</p><p class='date'>" + ele.date + "</p><p class='time'>" + ele.time + "</p><i id='" + ele.id + "' class='fa fa-pencil-square-o EditIcon' data-toggle='modal' data-target='#FormModal' onclick='ImageGallery.EditForm(event)' aria-hidden='true'></i><i id='" + ele.id + "' class='fa fa-trash' onclick='ImageGallery.deleteImage(event)' aria-hidden='true'></i></div>";
+                gallery === null || gallery === void 0 ? void 0 : gallery.appendChild(imageDiv);
+            }
+        });
+    },
+    generateUniqueId: function () {
+        var id = Math.floor(Math.random() * 1000000);
+        var list = Ser.gelist();
+        list.forEach(function (ele) {
+            if (ele.id == id) {
+                id = Math.floor(Math.random() * 1000000);
+            }
+        });
+        return id;
+    },
+    DisplayItems: function () {
+        var imagelist = Ser.gelist();
+        ImageGallery.CreateGalleryItems(imagelist);
+    },
     checkIfEmptyList: function () {
         var _a;
         var gallery = document.querySelector(".galleryPortion");
@@ -22,6 +45,7 @@ var ImageGallery = {
             }
             else {
                 (_a = document.querySelector(".MessageTitle")) === null || _a === void 0 ? void 0 : _a.remove();
+                ImageGallery.DisplayItems();
             }
         }
     },
@@ -54,27 +78,25 @@ var ImageGallery = {
         return time;
     },
     SaveImage: function () {
-        var _a, _b;
+        var _a, _b, _c;
         var time;
         var gallery = document.querySelector('.galleryPortion');
-        var imageDiv = document.createElement('div');
         var modal = document.getElementById('FormModal');
         var enterDate = document.querySelector('.EnterDate');
         var AuthorName = document.querySelector('.AuthorName');
         var inputImage = document.querySelector(".imageinput");
+        var UniqueId = ImageGallery.generateUniqueId();
         time = ImageGallery.getTime();
         if (gallery != null && AuthorName != null && modal != null && inputImage != null) {
             if (Ut.validate(AuthorName.value, inputImage.value, enterDate.value) == true) {
-                Ser.AddImage(ImageGallery.id, AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
-                imageDiv.innerHTML = "<div class='imageBox'><img  src='" + ImageGallery.recentUrl + "'></div><div class='content'> <p class='name'>" + AuthorName.value + "</p><p class='date'>" + enterDate.value.toString() + "</p><p class='time'>" + time + "</p><i id='" + ImageGallery.id + "' class='fa fa-pencil-square-o EditIcon' data-toggle='modal' data-target='#FormModal' onclick='ImageGallery.EditForm(event)' aria-hidden='true'></i><i id='" + ImageGallery.id + "' class='fa fa-trash' onclick='ImageGallery.deleteImage(event)' aria-hidden='true'></i></div>";
-                ImageGallery.id = ImageGallery.id + 1;
-                gallery === null || gallery === void 0 ? void 0 : gallery.appendChild(imageDiv);
+                Ser.AddImage(UniqueId, AuthorName.value, time, enterDate.value, ImageGallery.recentUrl, inputImage.value);
+                ImageGallery.CreateGalleryItems(Ser.gelist());
                 ImageGallery.clearFormField();
                 (_a = document.getElementById("SubmitButton")) === null || _a === void 0 ? void 0 : _a.setAttribute("data-dismiss", "modal");
-                ImageGallery.checkIfEmptyList();
+                (_b = document.querySelector(".MessageTitle")) === null || _b === void 0 ? void 0 : _b.remove();
             }
             else {
-                (_b = document.getElementById("SubmitButton")) === null || _b === void 0 ? void 0 : _b.setAttribute("data-dismiss", "");
+                (_c = document.getElementById("SubmitButton")) === null || _c === void 0 ? void 0 : _c.setAttribute("data-dismiss", "");
                 alert("all fields are mandatory");
             }
         }

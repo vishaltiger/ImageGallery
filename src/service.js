@@ -1,47 +1,47 @@
 "use strict";
 var Service = /** @class */ (function () {
     function Service() {
-        this.imagelist = [];
     }
     Service.prototype.Service = function () {
         console.log("service");
     };
     Service.prototype.gelist = function () {
-        return this.imagelist;
+        var imagelist = [];
+        if (sessionStorage.getItem("items") != null) {
+            if (JSON.parse(sessionStorage.getItem("items") || '').length != 0) {
+                imagelist = JSON.parse(sessionStorage.getItem("items") || '{}');
+            }
+        }
+        return imagelist;
     };
-    Service.prototype.AddImage = function (id, name, time, date, recentUrl, filename) {
-        var obj = {
-            id: id,
-            name: name,
-            time: time,
-            date: date,
-            recentUrl: recentUrl,
-            fileName: filename
-        };
-        this.imagelist.push(obj);
+    Service.prototype.AddImage = function (id, name, time, date, recentUrl, fileName) {
+        var imagelist = this.gelist();
+        var obj = { id: id, name: name, time: time, date: date, recentUrl: recentUrl, fileName: fileName };
+        imagelist.push(obj);
+        sessionStorage.setItem("items", JSON.stringify(imagelist));
         return obj;
     };
     Service.prototype.EditImage = function (id, name, time, date, recentUrl, fileName) {
-        this.imagelist.forEach(function (ele) {
+        var imagelist = this.gelist();
+        var obj = { id: id, name: name, time: time, date: date, recentUrl: recentUrl, fileName: fileName };
+        imagelist.forEach(function (ele, index) {
             if (ele.id == id) {
-                ele.id = id;
-                ele.name = name;
-                ele.time = time;
-                ele.date = date;
-                ele.recentUrl = recentUrl;
-                ele.fileName = fileName;
-                return ele;
+                imagelist.splice(index, 1);
+                imagelist.push(obj);
+                sessionStorage.setItem("items", JSON.stringify(imagelist));
             }
         });
+        return obj;
     };
     Service.prototype.Delete = function (id) {
-        var _this = this;
-        this.imagelist.forEach(function (ele) {
+        var imagelist = this.gelist();
+        imagelist.forEach(function (ele) {
             if (ele.id == id) {
-                var i = _this.imagelist.indexOf(ele);
-                _this.imagelist.splice(i, 1);
+                var i = imagelist.indexOf(ele);
+                imagelist.splice(i, 1);
             }
         });
+        sessionStorage.setItem("items", JSON.stringify(imagelist));
         return true;
     };
     return Service;
