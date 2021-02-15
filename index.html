@@ -1,0 +1,71 @@
+<html>
+    <head>
+<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="./font_awesome/css/font-awesome.min.css">
+<script src="bootstrap/js/"></script>
+<link rel="stylesheet" href="./index.css">
+    </head>
+</html>
+<body>
+    <div id="ImageGallery">
+<nav class="navbar navbar-expand-lg">
+<p class="title">
+    Gallery
+</p>
+</nav>
+<div class="mainBodysection">
+<div class="buttonPortion">
+    <button type="button" class="btn btn-success AddFormOpen" data-toggle="modal" data-target="#FormModal">
+        Upload
+    </button>
+</div>
+<!--Add Image modal-->
+<div class="modal fade" id="FormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Image</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+                <label >Enter Author Name</label>
+                <input type="text" class="form-control AuthorName"  aria-describedby="emailHelp" placeholder="Enter Author Name">
+                
+              </div>
+              <div class="form-group">
+                <label >Choose Image</label>
+                <input type="file"  accept="image/gif, image/jpeg, image/png" class="form-control imageinput"  aria-describedby="emailHelp" placeholder="Choose Image">
+                
+              </div>
+              <div class="form-group">
+                <label >Enter Date</label>
+                <input type="date"  class="form-control EnterDate"  aria-describedby="emailHelp" placeholder="Enter Date">
+                
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"  id="SubmitButton">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+<div class="galleryPortion">
+
+</div>
+</div>
+    <script src="./src/service.js"></script>
+    <script src="./src/utility.js"></script>
+    <script  src="./src/index.js">
+    
+    </script>
+</body>

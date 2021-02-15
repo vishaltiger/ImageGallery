@@ -1,0 +1,131 @@
+
+#ImageGallery{
+background-color: #262626;
+min-height: 790px;
+}
+#ImageGallery .navbar{
+background-color: rgb(223, 136, 37);
+height: 100px;
+border-bottom: 1px solid black;
+}
+#ImageGallery .title{
+padding: 25px;
+font-size: 32px;
+font-weight: bold;
+color: white;
+-webkit-text-stroke-width: 1px;
+-webkit-text-stroke-color: black;
+cursor: pointer;
+}
+#ImageGallery .mainBodysection .buttonPortion{
+float: left;
+margin-left: 10%;
+}
+#ImageGallery .mainBodysection .galleryPortion{
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+margin-left: 15%;
+padding-top:5% ;
+padding-bottom: 2%;
+
+}
+#ImageGallery .mainBodysection .galleryPortion .MessageTitle{
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  margin-left: 30%;
+  margin-top: 5%;
+
+}
+#ImageGallery .mainBodysection .galleryPortion .MessageTitle img{
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+}
+#ImageGallery .mainBodysection .galleryPortion > div{
+height: 300px;
+width: 300px;
+margin: 10px;
+box-sizing: border-box;
+position: relative;
+overflow: hidden;
+cursor: pointer;
+filter: drop-shadow(0px 2px 2px white);
+
+
+}
+#ImageGallery .mainBodysection .galleryPortion > div .imageBox{
+position: relative;
+}
+#ImageGallery .mainBodysection .galleryPortion  > div .imageBox img{
+max-width: 100%;
+height: 100%;
+width: 100%;
+transition: transform 2s;
+}
+#ImageGallery .mainBodysection .galleryPortion > div:hover .imageBox img{
+transform: scale(1.2);
+
+}
+#ImageGallery .mainBodysection .galleryPortion > div .content{
+position: absolute;
+top:10px;
+left: 10px;
+bottom: 10px;
+right: 10px;
+background: rgba(0,0,0,0.8);
+transform: scale(0);
+transition: transform 0.5s;
+}
+#ImageGallery .mainBodysection .galleryPortion > div:hover .content{
+transform: scale(1);
+}
+#ImageGallery .mainBodysection .galleryPortion > div .name{
+padding-left: 10px;
+padding-right: 10px;
+width: 250px;
+overflow: hidden;
+font-size: 24px;
+color: white;
+margin: auto;
+margin-top: 10px;
+text-overflow: ellipsis;
+white-space: nowrap;
+text-align: center;
+}
+#ImageGallery .mainBodysection .galleryPortion > div .date{
+position: absolute;
+left: 52%;
+top:90%;
+color: #fff;
+font-size: 12px;
+font-style: italic;
+}
+#ImageGallery .mainBodysection .galleryPortion > div .time{
+position: absolute;
+left: 78%;
+top:90%;
+color: #fff;
+font-size: 12px;
+font-style: italic;
+}
+#ImageGallery .mainBodysection .galleryPortion > div .fa-trash{
+position: absolute;
+left: 35%;
+top:40%;
+color: #fff;
+font-size: 24px;
+
+}
+#ImageGallery .mainBodysection .galleryPortion > div .fa-pencil-square-o{
+position: absolute;
+left: 52%;
+top:41%;
+color: #fff;
+font-size: 24px;
+}
+#FormModal .modal-title{
+font-size: 20px;
+font-weight: bold;
+}
