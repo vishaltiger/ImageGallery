@@ -24,22 +24,17 @@ var Service = /** @class */ (function () {
     Service.prototype.EditImage = function (id, name, time, date, recentUrl, fileName) {
         var imagelist = this.gelist();
         var obj = { id: id, name: name, time: time, date: date, recentUrl: recentUrl, fileName: fileName };
-        imagelist.forEach(function (ele, index) {
-            if (ele.id == id) {
-                imagelist.splice(index, 1);
-                imagelist.push(obj);
-                sessionStorage.setItem("items", JSON.stringify(imagelist));
-            }
+        imagelist = imagelist.filter(function (item) {
+            return item.id != id;
         });
+        imagelist.push(obj);
+        sessionStorage.setItem("items", JSON.stringify(imagelist));
         return obj;
     };
     Service.prototype.Delete = function (id) {
         var imagelist = this.gelist();
-        imagelist.forEach(function (ele) {
-            if (ele.id == id) {
-                var i = imagelist.indexOf(ele);
-                imagelist.splice(i, 1);
-            }
+        imagelist = imagelist.filter(function (item) {
+            return item.id != id;
         });
         sessionStorage.setItem("items", JSON.stringify(imagelist));
         return true;

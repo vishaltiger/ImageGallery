@@ -24,22 +24,18 @@ return obj;
 public EditImage(id:number,name:string,time:string,date:string,recentUrl:string,fileName:string):GalleryItemModal{
 var imagelist:GalleryItemModal[]=this.gelist();
 var obj:GalleryItemModal = {id,name,time,date,recentUrl,fileName};
-imagelist.forEach((ele,index)=>{
-if(ele.id==id){
-imagelist.splice(index,1);
+imagelist = imagelist.filter(item=>{
+    return item.id!=id;
+})
 imagelist.push(obj);
 sessionStorage.setItem("items",JSON.stringify(imagelist));
-}  
-})
+
 return obj; 
 }
 public Delete(id:number):boolean{
 var imagelist:GalleryItemModal[]=this.gelist();
-imagelist.forEach(ele=>{
-if(ele.id==id){
-var i =imagelist.indexOf(ele);
-imagelist.splice(i,1);  
-}
+imagelist = imagelist.filter(item=>{
+    return item.id!=id;
 })
 sessionStorage.setItem("items",JSON.stringify(imagelist));
 return true;
